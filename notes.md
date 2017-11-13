@@ -16,4 +16,21 @@ Secondary Certificates (https://tools.ietf.org/html/draft-bishop-httpbis-http2-a
 	- Allows servers to specify client certificates per request -- per-request certificates are not possible with certifiate-based client authentication in TLS
 - Status: likely to be adopted as a WG item
 
+## ntp/tictoc
+
+NTS (https://github.com/dfoxfranke/nts)
+- TLDR: use TLS to derive a shared secret, negotiate cookies and AEAD algorithms, and use the key and algorithm to authenticate NTPv4 packets
+- Only client-server mode considered
+    - No more DTLS tunneling, peer-to-peer synchronization, broadcast, or server monitoring modes
+    - These may be considered in experimental documents
+- Outstanding issues to be completed before next WGLC
+    - State machine diagrams for client and the protocol overview
+    - Considering normative requirements for cookie security
+- Concerns: how are AEAD nonces generated? 
+    - SIV modes, e.g., AEAD_AES_SIV_CMAC_256, are recommended to help deal with the problem
+- Implementations: ???
+
+
+
+
 
