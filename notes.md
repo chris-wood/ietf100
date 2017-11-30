@@ -28,7 +28,7 @@ NTS (https://github.com/dfoxfranke/nts)
     - Considering normative requirements for cookie security
 - Concerns: how are AEAD nonces generated? 
     - SIV modes, e.g., AEAD_AES_SIV_CMAC_256, are recommended to help deal with the problem
-- Implementations: ???
+- Implementations: ??
 
 # opsec
 Transport encryption and its effect on the Internet (XXX)
@@ -70,7 +70,7 @@ draft-trammell-taps-post-sockets-03:
 Charter updates
 - Everything exception HTTP is out of scope for application mappings
     - No DNS-over-QUIC until 2019 (at the earliest)
-- 
+- Mobility driven by path probing and subsequent latching
 
 Spin bit design team
 - Consensus: RTT measurements by spin bit do not introduce a new source of measurement for geolocating endpoints
