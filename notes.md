@@ -39,8 +39,8 @@ Separating crypto negotiation and communication (XXX)
 
 # tls
 SNI encryption
-- Main driving use case: client privacy, especially when coupled with DNS-over-TLS
-- SNI use cases:
+- Motivation: client privacy, especially when coupled with DNS-over-TLS
+- SNI (mis)use cases:
     - Certificate matching
     - Load balancing and routing without TLS termination
     - Relevant example: Turkey blocks traffic to Wikipedia using the SNI
@@ -51,12 +51,18 @@ SNI encryption
     - Client Hello tunneling in 0-RTT data
     - DNS record that specifies the SNI to use
         - DNS is not great since cached entries prevent the server from changing its private key at will
+- Outcome: no consensus on approach, yet the problem persists
 
 Middlebox issues
 - Needed to prevent insecure fallback by malicious entities
+    - High failure rates make it difficult for clients to distinguish between network issues and active attacks
+- 1.3 failure rates MUST be within some small epsilon of 1.2 failure rates
 
 Rollout plan
 - Major implementations and servers should have -22 changes integrated in at most two weeks time and will report back
+
+ATLS
+- 
 
 # taps
 draft-trammell-taps-post-sockets-03:
@@ -70,10 +76,12 @@ draft-trammell-taps-post-sockets-03:
 Charter updates
 - Everything exception HTTP is out of scope for application mappings
     - No DNS-over-QUIC until 2019 (at the earliest)
-- Mobility driven by path probing and subsequent latching
 
 Spin bit design team
 - Consensus: RTT measurements by spin bit do not introduce a new source of measurement for geolocating endpoints
+    - IP-based geolocation services exist
+    - Passive RTT measurements have too much noise
+    - See: https://github.com/britram/trilateration/blob/paper-rev-1/paper.ipynb
 - Design issue: spin bit doesn't capture the right data for spurious traffic
 
 Draft updates
@@ -87,7 +95,7 @@ Connection migration
 - Principles:
     - Probing and latching are separable events
     - Interface use is a local policy decision
-    - Honor peer's interface decision
+    - Honor peer's interface decision (latch onto new peer address once probe succeeds)
 - Look at MOBIKE for relevant threat model and suggestions
 
 # dprive (bar BOF)
@@ -103,15 +111,24 @@ Connection migration
     - Power performance vs DNS over TLS padding size -- what are the tradeoffs and what is the sweet spot?
 - DNS over TLS server-side padding profile chosen it fits three responses in a single segment
 - Some folks are working on iPhone apps to do this
+- See also DNS-over-HTTPS WG: https://datatracker.ietf.org/group/doh/about/
+    - Charter-drive ID: https://www.ietf.org/archive/id/draft-hoffman-dispatch-dns-over-https-00.txt
 
 # saag
 Improving randomness in security protocols
 - Problem: defending against systemic system PRNG failures.
 - TLDR: mix a signed value of a static string into the output of a CSPRNG.
-    - Entropy is at least as good as the signature output.
-- Well received -- moving to CFRG.
 
-# dns-over-https
-draft-ietf-doh-dns-over-https:
--
- 
+# cfrg
+SPAKE2: draft-irtf-cfrg-spake2-04.txt
+- Resurrected, document slightly updated
+- Used by Magic Wormhole: https://github.com/warner/magic-wormhole
+- Consider using PAKEs to replace password-based authentiation in web apps
+
+PKEX: https://tools.ietf.org/html/draft-harkins-pkex-04#section-7
+- Problem: establish trust in "raw" public keys used in, e.g., TLS, IKE, etc.
+    - Internally, proof of possession of corresponding private key
+- PKEX (algorithmically):
+    - (Exchange): Use PAKE to establish secure channel with a trusted identity
+    - (Commit): Transfer raw public keys and proof-of-possession over channel
+- No proof, yet several interoperable implementations 
