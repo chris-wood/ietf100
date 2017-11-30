@@ -31,11 +31,13 @@ NTS (https://github.com/dfoxfranke/nts)
 - Implementations: ??
 
 # opsec
-Transport encryption and its effect on the Internet (XXX)
-- XXX
+Transport encryption and its effect on the Internet 
+- Assess impact of QUIC and related protocols in network operation and management practices
+- TLDR: total encryption helps the ends, hurts the middle -- what's the sweet spot?
 
-Separating crypto negotiation and communication (XXX)
-- XXX
+Separating crypto negotiation and communication
+- Describe how to factor transport security protocols
+- Run handshake OOB and use it to vend keying material for later use
 
 # tls
 SNI encryption
@@ -53,16 +55,25 @@ SNI encryption
         - DNS is not great since cached entries prevent the server from changing its private key at will
 - Outcome: no consensus on approach, yet the problem persists
 
-Middlebox issues
+Middlebox issues and compatibility mode
 - Needed to prevent insecure fallback by malicious entities
     - High failure rates make it difficult for clients to distinguish between network issues and active attacks
 - 1.3 failure rates MUST be within some small epsilon of 1.2 failure rates
+- Compatibility mode: make 1.3 look like 1.2
+    - Bring back session ID, compression, CCS messages, etc.
+    - Note: nothing affects the 1.3 state machine. Compatibility messages MAY be sent by senders and MUST be ignored by receivers.
+
+Draft 22:
+- Implement changes for improved middlebox penetration
+- Move server_certificate_type to encrypted extensions
+- Allow resumption with a different SNI
+- Padding extension can change on HRR
+- Allow an empty ticket_nonce
+- Remove requirement to immediately respond to close_notify with
+  close_notify (allowing half-close)
 
 Rollout plan
 - Major implementations and servers should have -22 changes integrated in at most two weeks time and will report back
-
-ATLS
-- 
 
 # taps
 draft-trammell-taps-post-sockets-03:
