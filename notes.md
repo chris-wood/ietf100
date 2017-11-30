@@ -13,6 +13,10 @@ Secondary Certificates (https://tools.ietf.org/html/draft-bishop-httpbis-http2-a
 	- Allows servers to specify client certificates per request -- per-request certificates are not possible with certifiate-based client authentication in TLS
 - Status: likely to be adopted as a WG item
 
+Early data
+- TLDR: clients add Early Data header, must retry early data in the event of specific failures
+- No comments or blockers, moving forward to WGLC
+
 # ntp/tictoc
 NTS (https://github.com/dfoxfranke/nts)
 - TLDR: use TLS to derive a shared secret, negotiate cookies and AEAD algorithms, and use the key and algorithm to authenticate NTPv4 packets
@@ -33,7 +37,7 @@ Transport encryption and its effect on the Internet (XXX)
 Separating crypto negotiation and communication (XXX)
 - XXX
 
-# TLS
+# tls
 SNI encryption
 - Main driving use case: client privacy, especially when coupled with DNS-over-TLS
 - SNI use cases:
@@ -47,6 +51,12 @@ SNI encryption
     - Client Hello tunneling in 0-RTT data
     - DNS record that specifies the SNI to use
         - DNS is not great since cached entries prevent the server from changing its private key at will
+
+Middlebox issues
+- Needed to prevent insecure fallback by malicious entities
+
+Rollout plan
+- Major implementations and servers should have -22 changes integrated in at most two weeks time and will report back
 
 # taps
 draft-trammell-taps-post-sockets-03:
@@ -94,4 +104,14 @@ Connection migration
 - DNS over TLS server-side padding profile chosen it fits three responses in a single segment
 - Some folks are working on iPhone apps to do this
 
+# saag
+Improving randomness in security protocols
+- Problem: defending against systemic system PRNG failures.
+- TLDR: mix a signed value of a static string into the output of a CSPRNG.
+    - Entropy is at least as good as the signature output.
+- Well received -- moving to CFRG.
 
+# dns-over-https
+draft-ietf-doh-dns-over-https:
+-
+ 
